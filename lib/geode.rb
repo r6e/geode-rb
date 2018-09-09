@@ -1,5 +1,5 @@
-require "geode/version"
+require 'geode/version'
 
-module Geode
+module Geode # rubocop:disable Style/Documentation
   # Your code goes here...
 end

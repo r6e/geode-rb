@@ -89,3 +89,6 @@ build-iPhoneSimulator/
 
 
 # End of https://www.gitignore.io/api/osx,ruby,visualstudiocode
+
+# Don't check in Gemfile.lock for gem projects
+Gemfile.lock

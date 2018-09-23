@@ -11,4 +11,5 @@ group :test, :development do
   gem 'pry'
   gem 'rake'
   gem 'rubocop'
+  gem 'simplecov'
 end

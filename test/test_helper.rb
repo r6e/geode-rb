@@ -3,3 +3,7 @@ require 'geode'
 
 require 'minitest/autorun'
 require 'minitest/reporters'
+require 'simplecov'
+
+SimpleCov.start
+Minitest::Reporters.use!

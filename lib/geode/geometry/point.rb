@@ -1,6 +1,8 @@
 module Geode
   # Describes a simple lat/lon point within the geographic coordinate system
   class Point
+    include Comparable
+
     attr_reader :latitude, :longitude
 
     # Creates a new Point. Latitude and longitude supplied in any thing _but_
@@ -22,5 +24,11 @@ module Geode
       "#{latitude.value},#{longitude.value}"
     end
     alias inspect to_s
+
+    def <=>(other)
+      own_line   = Line.between_points(self, Point.new(0, 0))
+      other_line = Line.between_points(other, Point.new(0, 0))
+      own_line.distance <=> other_line.distance
+    end
   end
 end

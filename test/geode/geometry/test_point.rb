@@ -8,7 +8,7 @@ class PointTest < Minitest::Test
   def test_it_creates_point_from_degrees
     point = @subject.new(82.773.degrees, -17.453.degrees)
     assert_equal 82.773.degrees, point.latitude.value
-    assert_equal -17.453.degrees, point.longitude.value
+    assert_equal (-17.453.degrees), point.longitude.value
   end
 
   def test_it_converts_units_to_degrees
@@ -29,8 +29,8 @@ class PointTest < Minitest::Test
     assert_equal 171.88733853924697.degrees, rad_point.longitude.value
 
     mix_point = @subject.new(5.kilometers, 3.radians)
-    assert_equal 0.04499122057929272.degrees, km_point.latitude.value
-    assert_equal 171.88733853924697.degrees, rad_point.longitude.value
+    assert_equal 0.04499122057929272.degrees, mix_point.latitude.value
+    assert_equal 171.88733853924697.degrees, mix_point.longitude.value
   end
 
   def test_it_fails_when_degrees_out_of_range

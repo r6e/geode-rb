@@ -47,8 +47,12 @@ class MeasureTest < Minitest::Test
   end
 
   def test_it_rases_error_for_incompatible_types
-    assert_raises(TypeError) { 1.degree + 'what is this i dont even' }
-    assert_raises()
+    assert_raises(TypeError) { 1.degree + '1' }
+    assert_raises(TypeError) { 1.kilometer - true }
+    assert_raises(TypeError) { 1.mile * [2.radians] }
+    assert_raises(TypeError) { 1.radian / { degrees: 2 } }
+    assert_raises(TypeError) { 3.degrees % :four_miles }
+    assert_raises(TypeError) { 2.kilometers == '9.942 furlongs' }
   end
 
   def test_it_converts_to_degrees_correctly

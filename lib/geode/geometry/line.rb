@@ -57,21 +57,24 @@ module Geode
     # can be found at https://www.movable-type.co.uk/scripts/latlong.html
     # That code is copyright 2002-2017 Chris Veness, under the MIT license
     def calculate_terminus(origin, bearing, distance)
-      origin_latitude  = origin.latitude.radians.value
-      origin_longitude = origin.longitude.radians.value
+      origin_latitude, origin_longitude = lat_lon_for(origin)
+
       bearing_radians  = bearing.radians.value
       distance_radians = distance.radians.value
 
       terminus_latitude =
         Math.asin(
           Math.sin(origin_latitude) * Math.cos(distance_radians) +
-          Math.cos(origin_latitude) * Math.sin(distance_radians) * Math.cos(bearing_radians)
+          Math.cos(origin_latitude) * Math.sin(distance_radians) *
+          Math.cos(bearing_radians)
         ).radians
 
       terminus_longitude =
         origin_longitude + Math.atan2(
-          Math.sin(bearing_radians) * Math.sin(distance_radians) * Math.cos(origin_latitude),
-          Math.cos(distance_radians) - Math.sin(origin_latitude) * Math.sin(terminus_latitude)
+          Math.sin(bearing_radians) * Math.sin(distance_radians) *
+          Math.cos(origin_latitude),
+          Math.cos(distance_radians) - Math.sin(origin_latitude) *
+          Math.sin(terminus_latitude)
         ).radians
 
       # Normalization
@@ -82,33 +85,44 @@ module Geode
     end
 
     def calculate_line(origin, terminus)
-      # The haversine formula
-      origin_latitude    = origin.latitude.radians.value
-      origin_longitude   = origin.longitude.radians.value
-      terminus_latitude  = terminus.latitude.radians.value
-      terminus_longitude = terminus.longitude.radians.value
-
-      distance =
-        2 * RADIAN * Math.asin(
-          Math.sqrt(
-            Math.sin((terminus_latitude - origin_latitude) / 2)**2 +
-            Math.cos(terminus_latitude) * Math.cos(origin_latitude) *
-            Math.sin((terminus_longitude - origin_longitude) / 2)**2
-          )
-        ).abs.kilometers
-
-      bearing =
-        Math.atan2(
-          Math.sin(terminus_longitude - origin_longitude) * Math.cos(terminus_latitude),
-          Math.cos(origin_latitude) * Math.sin(terminus_latitude) -
-          Math.sin(origin_latitude) * Math.cos(terminus_latitude) *
-          Math.cos(terminus_longitude - origin_longitude)
-        ).radians.degrees
+      distance = distance(origin, terminus)
+      bearing = bearing_to(origin, terminus)
 
       # Normalization
       bearing = (bearing + 360) % 360
 
       [bearing, distance]
+    end
+
+    def distance_to(origin, terminus)
+      # The haversine formula
+      origin_latitude, origin_longitude = lat_lon_for(origin)
+      terminus_latitude, terminus_longitude = lat_lon_for(terminus)
+
+      2 * RADIAN * Math.asin(
+        Math.sqrt(
+          Math.sin((terminus_latitude - origin_latitude) / 2)**2 +
+          Math.cos(terminus_latitude) * Math.cos(origin_latitude) *
+          Math.sin((terminus_longitude - origin_longitude) / 2)**2
+        )
+      ).abs.kilometers
+    end
+
+    def bearing_to(origin, terminus)
+      origin_latitude, origin_longitude = lat_lon_for(origin)
+      terminus_latitude, terminus_longitude = lat_lon_for(terminus)
+
+      Math.atan2(
+        Math.sin(terminus_longitude - origin_longitude) *
+        Math.cos(terminus_latitude),
+        Math.cos(origin_latitude) * Math.sin(terminus_latitude) -
+        Math.sin(origin_latitude) * Math.cos(terminus_latitude) *
+        Math.cos(terminus_longitude - origin_longitude)
+      ).radians.degrees
+    end
+
+    def lat_lon_for(point)
+      [point.latitude.radians.value, point.longitude.radians.value]
     end
   end
 end

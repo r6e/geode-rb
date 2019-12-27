@@ -8,5 +8,7 @@ group :test, :development do
   gem 'pry'
   gem 'rake'
   gem 'rubocop'
+  gem 'rubocop-minitest'
+  gem 'rubocop-performance'
   gem 'simplecov'
 end

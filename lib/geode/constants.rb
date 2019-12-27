@@ -9,7 +9,7 @@ module Geode
 
   # Easy conversion: CONVERSION_TABLE[:from][:to]
   CONVERSION_TABLE = {
-    degree: {
+    degree:    {
       degree:    1.degree,
       kilometer: (DEGREE * RADIAN).kilometers,
       mile:      ((DEGREE * RADIAN) / MILE).miles,
@@ -21,13 +21,13 @@ module Geode
       mile:      (KILOMETER / MILE).miles,
       radian:    (KILOMETER / RADIAN).radians
     },
-    mile: {
+    mile:      {
       degree:    (MILE / (DEGREE * RADIAN)).degrees,
       kilometer: MILE.kilometers,
       mile:      1.mile,
       radian:    (MILE / RADIAN).radians
     },
-    radian: {
+    radian:    {
       degree:    (1 / DEGREE).degrees,
       kilometer: RADIAN.kilometers,
       mile:      (RADIAN / MILE).miles,
@@ -36,9 +36,9 @@ module Geode
   }.freeze
 
   # Boundaries
-  LATITUDE_RANGE  = (-90.degrees..90.degrees)
-  LONGITUDE_RANGE = (-180.degrees..180.degrees)
-  BEARING_RANGE   = (0.degrees..360.degrees)
+  LATITUDE_RANGE  = (-90.degrees..90.degrees).freeze
+  LONGITUDE_RANGE = (-180.degrees..180.degrees).freeze
+  BEARING_RANGE   = (0.degrees..360.degrees).freeze
 
   # Compass Directions
   N   = 0.degrees

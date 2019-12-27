@@ -20,7 +20,10 @@ module Geode
       bearing  = width.positive? ? 270.degrees : 90.degrees
       corner_b = Line.from_point(point, bearing, width.abs).terminus
 
-      point_b = Point.new(corner_a.terminus.latitude, corner_b.terminus.longitude)
+      point_b = Point.new(
+        corner_a.terminus.latitude,
+        corner_b.terminus.longitude
+      )
 
       new(point, point_b)
     end

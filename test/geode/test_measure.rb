@@ -24,7 +24,6 @@ class MeasureTest < Minitest::Test
     assert_equal @subject.new(1, :kilometer), @subject.new(1, :kilometers)
     assert_equal @subject.new(1, :mile), @subject.new(1, :miles)
     assert_equal @subject.new(1, :radian), @subject.new(1, :radians)
-
   end
 
   def test_it_rases_error_for_bad_units

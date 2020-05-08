@@ -85,7 +85,7 @@ module Geode
     end
 
     def calculate_line(origin, terminus)
-      distance = distance(origin, terminus)
+      distance = distance_to(origin, terminus)
       bearing = bearing_to(origin, terminus)
 
       # Normalization

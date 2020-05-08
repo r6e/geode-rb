@@ -9,7 +9,7 @@ minitest:
   stage: test
   script:
     - apk update
-    - apk add --no-cache make
+    - apk add --no-cache build-base
     - gem update --system
     - gem install bundler --version=2.1.4
     - bundle install

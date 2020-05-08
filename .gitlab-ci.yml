@@ -8,8 +8,10 @@ include:
 minitest:
   stage: test
   script:
+    - apk update
+    - apk add --no-cache make
     - gem update --system
-    - gem install bundler --version 2.1.2
+    - gem install bundler --version=2.1.4
     - bundle install
     - rake test
   artifacts:

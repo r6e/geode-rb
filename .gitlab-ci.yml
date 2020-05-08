@@ -15,17 +15,17 @@ minitest:
     - gem update --system
     - gem install bundler --version=2.1.4
     - bundle install
-    - rake test
+    - bundle exec rake test
   artifacts:
     paths:
-      - coverage/
+      - tmp/coverage
 
 pages:
   stage: deploy
   dependencies:
     - minitest
   script:
-    - mv coverage/ public/
+    - mv tmp/coverage public/
   artifacts:
     paths:
       - public

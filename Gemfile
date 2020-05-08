@@ -3,13 +3,15 @@ source 'https://rubygems.org'
 gemspec
 
 group :test, :development do
-  gem 'minitest'
-  gem 'minitest-reporters'
-  gem 'pry'
-  gem 'rake'
-  gem 'rubocop', '~> 0.81.0'
-  gem 'rubocop-minitest'
-  gem 'rubocop-performance'
-  gem 'simplecov'
-  gem 'test-prof'
+  gem 'minitest', require: false
+  gem 'minitest-reporters', require: false
+  gem 'pry', require: false
+  gem 'rake', require: false
+  gem 'rubocop', '~> 0.81.0', require: false
+  gem 'rubocop-minitest', require: false
+  gem 'rubocop-performance', require: false
+  gem 'ruby-prof', require: false
+  gem 'simplecov', require: false
+  gem 'stackprof', require: false
+  gem 'test-prof', require: false
 end

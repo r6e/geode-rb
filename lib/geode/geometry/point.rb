@@ -26,24 +26,29 @@ module Geode
     alias inspect to_s
 
     def <=>(other)
-      distance_to(Point.new(0, 0)) <=> distance_to(Point.new(0, 0))
+      delta = distance_to(other)
+      delta *= -1 if bearing_to(other).negative?
+
+      delta
     end
 
-    # Algorithms below adapted from Javascript by Chris Veness. Originals found at
-    # https://www.movable-type.co.uk/scripts/latlong.html which is copyright 2002-
-    # 2017 Chris Veness, licensed under the MIT license
+    # Algorithms below adapted from Javascript by Chris Veness. Originals found
+    # at https://www.movable-type.co.uk/scripts/latlong.html copyright 2002-2017
+    # Chris Veness, licensed under the MIT license
 
     # Returns the distance in kilometers from this point to a given destination
     #
     # @param point [Geode::Point] the destination point
     # @return [Geode::Measure] the distance in km to the destination point
     def distance_to(point)
-      lat_a = self.latitude.radians.value
+      lat_a = latitude.radians.value
       lat_b = point.latitude.radians.value
       d_lat = lat_b - lat_a
-      d_lon = point.longitude.radians.value - self.longitude.radians.value
+      d_lon = point.longitude.radians.value - longitude.radians.value
 
-      part_a = Math.sin(d_lat / 2)**2 + Math.cos(lat_a) * Math.cos(lat_b) *
+      part_a = Math.sin(d_lat / 2)**2 +
+               Math.cos(lat_a) *
+               Math.cos(lat_b) *
                Math.sin(d_lon / 2)**2
       part_b = 2 * Math.atan2(Math.sqrt(part_a), Math.sqrt(1 - part_a))
 
@@ -55,9 +60,9 @@ module Geode
     # @param point [Geode::Point] the destination point
     # @return [Geode::Measure] the bearing in degrees to the destination point
     def bearing_to(point)
-      lat_a = self.latitude.radians.value
+      lat_a = latitude.radians.value
       lat_b = point.latitude.radians.value
-      d_lon = point.longitude.radians.value - self.longitude.radians.value
+      d_lon = point.longitude.radians.value - longitude.radians.value
 
       y_dir = Math.sin(d_lon) * Math.cos(lat_b)
       x_dir = Math.cos(lat_a) * Math.sin(lat_b) -
@@ -79,10 +84,10 @@ module Geode
     # @param point [Geode::Point] the destination point
     # @return [Geode::Point] the midpoint between this and the destination point
     def midpoint_to(point)
-      lat_a = self.latitude.radians.value
-      lon_a = self.longitude.radians.value
+      lat_a = latitude.radians.value
+      lon_a = longitude.radians.value
       lat_b = point.latitude.radians.value
-      d_lon = point.longitude.radians.value - self.longitude.radians.value
+      d_lon = point.longitude.radians.value - longitude.radians.value
 
       b_x = Math.cos(lat_b) * Math.cos(d_lon)
       b_y = Math.cos(lat_b) * Math.sin(d_lon)
@@ -103,8 +108,8 @@ module Geode
     # @param fraction [Numeric] the fraction of distance to find the point
     # @return [Geode::Point] the midpoint between this and the destination point
     def intermediate_point_to(point, fraction)
-      lat_a = self.latitude.radians.value
-      lon_a = self.longitude.radians.value
+      lat_a = latitude.radians.value
+      lon_a = longitude.radians.value
       lat_b = point.latitude.radians.value
       lon_b = point.longitude.radians.value
 
@@ -131,8 +136,8 @@ module Geode
     # @param fraction [Numeric] the fraction of distance to find the point
     # @return [Geode::Point] the midpoint between this and the destination point
     def destination_point(bearing, distance)
-      lat_a = self.latitude.radians.value
-      lon_a = self.longitude.radians.value
+      lat_a = latitude.radians.value
+      lon_a = longitude.radians.value
 
       b_rad = bearing.radians.value
       d_rad = distance.radians.value

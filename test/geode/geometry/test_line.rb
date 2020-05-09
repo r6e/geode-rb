@@ -5,8 +5,8 @@ class LineTest < Minitest::Test
     @subject  = Geode::Line
     @origin   = Geode::Point.new(0.degrees, 0.degrees)
     @terminus = Geode::Point.new(2.degrees, 2.degrees)
-    @bearing  = 45.degrees
-    @distance = 314.3.kilometers
+    @bearing  = 44.98.degrees
+    @distance = 314.5.kilometers
 
     # The expected worst-case accuracy of the Haversine algorithm for distance
     # is 0.5%. We're testing the implementation here, not the mathematical
@@ -15,20 +15,18 @@ class LineTest < Minitest::Test
     @delta = 0.0005
   end
 
-  def test_it_calculates_line_between_points
+  def test_it_creates_line_between_points
     line = @subject.between_points(@origin, @terminus)
 
-    assert_in_delta @bearing, line.bearing, @bearing * @delta
-    assert_in_delta @distance, line.distance, @distance * @delta
+    assert_equal @origin, line.origin
+    assert_equal @terminus, line.terminus
   end
 
   def test_it_calculates_line_from_point
-    line      = @subject.from_point(@origin, @bearing, @distance)
-    latitude  = line.terminus.latitude
-    longitude = line.terminus.longitude
+    line   = @subject.from_point(@origin, @bearing, @distance)
+    d_dist = @origin.distance_to(@terminus) * @delta
 
-    assert_in_delta @terminus.latitude, latitude, @terminus.latitude * @delta
-    assert_in_delta @terminus.longitude, longitude, @terminus.longitude * @delta
+    assert @terminus.distance_to(line.terminus) < d_dist
   end
 
   def test_it_calculates_correctly_when_crossing_the_pole

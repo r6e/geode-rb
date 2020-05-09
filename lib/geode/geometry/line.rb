@@ -2,7 +2,7 @@ module Geode
   # Describes a line between two points on the earth's surface. Provides
   # measurements of the line's bearing, distance, origin, and terminus.
   class Line
-    attr_reader :bearing, :distance, :origin, :terminus
+    attr_reader :origin, :terminus
 
     # Creates a new Geode::Line from the given origin and terminus points.
     #
@@ -39,59 +39,10 @@ module Geode
 
     private
 
-    # Heading should be specified as degrees clockwise from true north
+    # Bearing should be specified as degrees clockwise from true north
     def initialize(origin, terminus: nil, bearing: nil, distance: nil)
-      @origin = origin
-
-      if terminus
-        @terminus           = terminus
-        @bearing, @distance = calculate_line(origin, terminus)
-      else
-        @bearing  = bearing
-        @distance = distance
-        @terminus = calculate_terminus(origin, bearing, distance)
-      end
-    end
-
-    # The algorithms below were adapted from Javascript by Chris Veness, which
-    # can be found at https://www.movable-type.co.uk/scripts/latlong.html
-    # That code is copyright 2002-2017 Chris Veness, under the MIT license
-    def calculate_terminus(origin, bearing, distance)
-      origin_latitude, origin_longitude = lat_lon_for(origin)
-
-      bearing_radians  = bearing.radians.value
-      distance_radians = distance.radians.value
-
-      terminus_latitude =
-        Math.asin(
-          Math.sin(origin_latitude) * Math.cos(distance_radians) +
-          Math.cos(origin_latitude) * Math.sin(distance_radians) *
-          Math.cos(bearing_radians)
-        ).radians
-
-      terminus_longitude =
-        origin_longitude + Math.atan2(
-          Math.sin(bearing_radians) * Math.sin(distance_radians) *
-          Math.cos(origin_latitude),
-          Math.cos(distance_radians) - Math.sin(origin_latitude) *
-          Math.sin(terminus_latitude)
-        ).radians
-
-      # Normalization
-      terminus_longitude = (terminus_longitude.degrees + 540) % 360 - 180
-      terminus_latitude  = (terminus_latitude.degrees + 270) % 180 - 90
-
-      Point.new(terminus_latitude, terminus_longitude)
-    end
-
-    def calculate_line(origin, terminus)
-      distance = distance_to(origin, terminus)
-      bearing = bearing_to(origin, terminus)
-
-      # Normalization
-      bearing = (bearing + 360) % 360
-
-      [bearing, distance]
+      @origin   = origin
+      @terminus = terminus || origin.destination_point(bearing, distance)
     end
 
     def distance_to(origin, terminus)

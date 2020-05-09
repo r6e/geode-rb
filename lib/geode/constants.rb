@@ -1,7 +1,9 @@
 module Geode
+  RADIUS_OF_EARTH = 6371.0088 # Radius of Earth, per IUGG
+
   # Base units, in km
   KILOMETER = 1
-  RADIAN    = 6367.44 # Radius of Earth
+  RADIAN    = RADIUS_OF_EARTH
 
   # Derived units
   MILE   = 1.609344 # In km, per international standard

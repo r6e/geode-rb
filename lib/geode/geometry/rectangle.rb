@@ -15,15 +15,12 @@ module Geode
     # Point and height/width as signed values indicating direction
     def self.from_point_and_dimensions(point, height, width)
       bearing  = height.positive? ? 0.degrees : 180.degrees
-      corner_a = Line.from_point(point, bearing, height.abs).terminus
+      corner_a = point.destination_point(bearing, height.abs)
 
       bearing  = width.positive? ? 270.degrees : 90.degrees
-      corner_b = Line.from_point(point, bearing, width.abs).terminus
+      corner_b = point.destination_point(bearing, width.abs)
 
-      point_b = Point.new(
-        corner_a.terminus.latitude,
-        corner_b.terminus.longitude
-      )
+      point_b = Point.new(corner_a.latitude, corner_b.longitude)
 
       new(point, point_b)
     end

@@ -1,3 +1,7 @@
+**DISCLAIMER: This gem is not published, and may not even work at times.**
+
+This gem, and all other "Geode" projects authored by [r6e](https://github.com/r6e) are inteded as a way to try out and practice new languages/libraries/techniques. Due to this, there are currently no plans to publish these, no guarantee that they work at all, and do not necessarily reflect high coding standards or best-practices.
+
 # Geode: a gem for geometric calculations on planets
 
 Geode provides an easy way to work with points, vectors, and shapes on the surface of planets (currently, only Earth is included by default).
